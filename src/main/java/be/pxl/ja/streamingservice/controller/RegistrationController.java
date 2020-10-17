@@ -29,99 +29,99 @@ import java.util.ResourceBundle;
 
 public class RegistrationController implements Initializable {
 
-	@FXML
-	private TextField emailTextField;
+    @FXML
+    private TextField emailTextField;
 
-	@FXML
-	private TextField passwordTextField;
+    @FXML
+    private TextField passwordTextField;
 
-	@FXML
-	private Button continueButton;
+    @FXML
+    private Button continueButton;
 
-	@FXML
-	private Button registerButton;
+    @FXML
+    private Button registerButton;
 
-	@FXML
-	private TextField firstnameTextField;
+    @FXML
+    private TextField firstnameTextField;
 
-	@FXML
-	private TextField lastnameTextField;
+    @FXML
+    private TextField lastnameTextField;
 
-	@FXML
-	private TextField cardnumberTextField;
+    @FXML
+    private TextField cardnumberTextField;
 
-	@FXML
-	private TextField cvcTextField;
+    @FXML
+    private TextField cvcTextField;
 
-	@FXML
-	private JFXComboBox<CreditCardType> creditCardTypeComboBox;
+    @FXML
+    private JFXComboBox<CreditCardType> creditCardTypeComboBox;
 
-	@FXML
-	private JFXComboBox<StreamingPlan> streamingPlanComboBox;
+    @FXML
+    private JFXComboBox<StreamingPlan> streamingPlanComboBox;
 
-	@FXML
-	private JFXDatePicker expirationDatePicker;
+    @FXML
+    private JFXDatePicker expirationDatePicker;
 
-	@FXML
-	private JFXProgressBar passwordStrengthIndicator;
+    @FXML
+    private JFXProgressBar passwordStrengthIndicator;
 
-	private Account newAccount;
-	private StreamingService streamingService;
+    private Account newAccount;
+    private StreamingService streamingService;
 
-	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
-		streamingService = StreamingServiceFactory.getStreamingService();
-		if (streamingPlanComboBox != null) {
-			streamingPlanComboBox.setItems(FXCollections.observableList(Arrays.asList(StreamingPlan.values())));
-		}
-		if (creditCardTypeComboBox != null) {
-			creditCardTypeComboBox.setItems(FXCollections.observableList(Arrays.asList(CreditCardType.values())));
-		}
-	}
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        streamingService = StreamingServiceFactory.getStreamingService();
+        if (streamingPlanComboBox != null) {
+            streamingPlanComboBox.setItems(FXCollections.observableList(Arrays.asList(StreamingPlan.values())));
+        }
+        if (creditCardTypeComboBox != null) {
+            creditCardTypeComboBox.setItems(FXCollections.observableList(Arrays.asList(CreditCardType.values())));
+        }
+    }
 
-	public void setAccount(Account newAccount) {
-		this.newAccount = newAccount;
-	}
+    public void setAccount(Account newAccount) {
+        this.newAccount = newAccount;
+    }
 
-	public void onContinue(ActionEvent actionEvent) {
-		newAccount = new Account(emailTextField.getText(), passwordTextField.getText());
-		newAccount.setStreamingPlan(streamingPlanComboBox.getValue());
-		try {
-			URL resource = getClass().getClassLoader().getResource(Pages.REGISTRATION_STEP2);
-			FXMLLoader loader = new FXMLLoader(resource);
-			Stage stage = (Stage) continueButton.getScene().getWindow();
-			Scene scene = new Scene(loader.load());
-			RegistrationController controller = loader.getController();
-			controller.setAccount(newAccount);
-			stage.setScene(scene);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    public void onContinue(ActionEvent actionEvent) {
+        newAccount = new Account(emailTextField.getText(), passwordTextField.getText());
+        newAccount.setStreamingPlan(streamingPlanComboBox.getValue());
+        try {
+            URL resource = getClass().getClassLoader().getResource(Pages.REGISTRATION_STEP2);
+            FXMLLoader loader = new FXMLLoader(resource);
+            Stage stage = (Stage) continueButton.getScene().getWindow();
+            Scene scene = new Scene(loader.load());
+            RegistrationController controller = loader.getController();
+            controller.setAccount(newAccount);
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public void onPasswordUpdate(KeyEvent event) {
-		int strength = PasswordUtil.calculateStrength(passwordTextField.getText());
-		passwordStrengthIndicator.setProgress(strength / 10.0);
-	}
+    public void onPasswordUpdate(KeyEvent event) {
+        int strength = PasswordUtil.calculateStrength(passwordTextField.getText());
+        passwordStrengthIndicator.setProgress(strength / 10.0);
+    }
 
-	public void onRegister(ActionEvent actionEvent) {
-		PaymentInfo paymentInfo = new PaymentInfo();
-		paymentInfo.setCardNumer(cardnumberTextField.getText());
-		paymentInfo.setExpirationDate(expirationDatePicker.getValue());
-		paymentInfo.setFirstName(firstnameTextField.getText());
-		paymentInfo.setLastName(lastnameTextField.getText());
-		paymentInfo.setSecurityCode(Integer.parseInt(cvcTextField.getText()));
-		paymentInfo.setType(creditCardTypeComboBox.getValue());
-		newAccount.setPaymentInfo(paymentInfo);
-		streamingService.addAccount(newAccount);
-		try {
-			URL resource = getClass().getClassLoader().getResource(Pages.LOGIN_PAGE);
-			Parent root = FXMLLoader.load(resource);
-			Stage stage = (Stage) registerButton.getScene().getWindow();
-			Scene scene = new Scene(root);
-			stage.setScene(scene);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    public void onRegister(ActionEvent actionEvent) {
+        PaymentInfo paymentInfo = new PaymentInfo();
+        paymentInfo.setCardNumber(cardnumberTextField.getText());
+        paymentInfo.setExpirationDate(expirationDatePicker.getValue());
+        paymentInfo.setFirstName(firstnameTextField.getText());
+        paymentInfo.setLastName(lastnameTextField.getText());
+        paymentInfo.setSecurityCode(Integer.parseInt(cvcTextField.getText()));
+        paymentInfo.setType(creditCardTypeComboBox.getValue());
+        newAccount.setPaymentInfo(paymentInfo);
+        streamingService.addAccount(newAccount);
+        try {
+            URL resource = getClass().getClassLoader().getResource(Pages.LOGIN_PAGE);
+            Parent root = FXMLLoader.load(resource);
+            Stage stage = (Stage) registerButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

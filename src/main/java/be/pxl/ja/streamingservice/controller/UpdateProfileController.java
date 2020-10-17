@@ -11,24 +11,24 @@ import javafx.stage.Stage;
 
 public class UpdateProfileController {
 
-	@FXML
-	private DatePicker dateOfBirthDatePicker;
+    @FXML
+    private DatePicker dateOfBirthDatePicker;
 
-	@FXML
-	private JFXTextField profileTextField;
+    @FXML
+    private JFXTextField profileTextField;
 
-	private Profile profile;
+    private Profile profile;
 
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-		profileTextField.setText(profile.getName());
-		dateOfBirthDatePicker.setValue(profile.getDateOfBirth());
-	}
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+        profileTextField.setText(profile.getName());
+        dateOfBirthDatePicker.setValue(profile.getDateOfBirth());
+    }
 
-	public void onUpdate(ActionEvent actionEvent) {
-		profile.setName(profileTextField.getText());
-		profile.setDateOfBirth(dateOfBirthDatePicker.getValue());
-		Stage stage =  (Stage) ((JFXButton) actionEvent.getSource()).getScene().getWindow();
-		stage.close();
-	}
+    public void onUpdate(ActionEvent actionEvent) {
+        profile.setName(profileTextField.getText());
+        profile.setDateOfBirth(dateOfBirthDatePicker.getValue());
+        Stage stage = (Stage) ((JFXButton) actionEvent.getSource()).getScene().getWindow();
+        stage.close();
+    }
 }
